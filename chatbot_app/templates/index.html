@@ -1,0 +1,194 @@
+<!-- chatbot_app/templates/index.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+{% comment %} 
+<style>
+    .card {
+        margin-bottom: 10px;
+    }
+
+    #user-input input {
+        border-radius: 5px;
+    }
+
+    #user-input button {
+        border-radius: 5px;
+    }
+
+    .user-message {
+        background-color: #B8E994;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    .bot-response {
+        background-color: #82CCDD;
+        text-align: left;
+        word-wrap: break-word;
+    }
+
+    #logo_show_first {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin: 10px;
+    }
+
+    #showthiscontent {
+        width: 380px;
+        height: 540px;
+        font-family: 'Arial', sans-serif;
+        display: none;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        margin-right: 70px;
+        margin-bottom: 110px;
+    }
+
+    #chat-container {
+        max-width: 360px;
+        margin: 0 auto;
+        height: 440px;
+        overflow-y: auto;
+    }
+
+    #user-input {
+        height: 75px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 9px;
+        background-color: #f8f9fa;
+        overflow: hidden;
+        scrollbar-color: #e9ecef #f8f9fa;
+    }
+
+    #user-input input {
+        font-size: 16px;
+        text-align: right;
+    }
+
+    #user-input button {
+        font-size: 16px;
+    }
+
+    /* Display input and button inline */
+    .card-body.inline-form {
+        justify-content: space-between; /* Adjust as needed */
+        align-items: center;
+    }
+
+    .card-body.inline-form input,
+    .card-body.inline-form button {
+        margin-right: 10px;
+    }
+
+    /* Adjust margins and paddings as needed */
+    .card-body.inline-form input {
+        margin-right: 10px;
+    }
+
+    #logo_show_first img {
+        cursor: pointer; /* Show pointer cursor on hover */
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    #logo_show_first img:hover {
+        transform: scale(1.2); /* Add a slight scale effect on hover */
+        box-shadow: 0 10px 10px 0 rgba(0, 0.8, 0, 0); /* Add a black shadow on hover */
+    }
+</style> {% endcomment %}
+
+<div id="logo_show_first">
+    <img onclick="onclicklogo()" src="{% static 'img/final_logo.png' %}" alt="logo" style="max-width: 100px;">
+</div>
+
+<div id="showthiscontent" class="card text-center" style="display:none">
+    <div class="card-body" style="background-image: url('{% static "img/whatsapp.png" %}'); overflow: hidden; text-align: right;">
+        <div class="mt-2">
+            <div id="chat-container" class="position-relative pb-0" style="background-image: url('{% static "img/whatsapp.png" %}');">
+                <div id="chat-messages" class="mb-0"></div>
+            </div>   
+            <div id="user-input" style="background-image: url('{% static "img/whatsapp.png" %}');">
+                <div class="card bg-light">
+                    <div class="card-body text-end inline-form row" style="background-image: url('{% static "img/whatsapp.png" %}');">
+                        <input type="text" id="user-message" class="form-control col" placeholder="Type your message..." onkeydown="if (event.key === 'Enter') sendMessage()">
+                        <button onclick="sendMessage()" class="btn btn-primary col-3">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function onclicklogo() {
+        var showThisContent = document.getElementById('showthiscontent');
+        if (showThisContent.style.display === 'none') {
+            showThisContent.style.display = 'block';
+        } else {
+            showThisContent.style.display = 'none';
+        }
+    }
+
+    function sendMessage() {
+        var userMessage = document.getElementById("user-message").value;
+        document.getElementById("user-message").value = "";
+
+        // Display user message
+        document.getElementById("chat-messages").innerHTML += `
+        <div class="card user-message mb-2" style="font-size: 16px;">
+            <div class="card-body text-end">
+                <strong>User:<br></strong> ${userMessage}
+            </div>
+        </div>
+    `;
+
+        // Scroll to the bottom of the chat container
+        var chatContainer = document.getElementById("chat-container");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Debug: Log user input
+        console.log("User Message:", userMessage);
+
+        var question = '';
+        if (document.getElementById("question") != undefined) {
+            question = document.getElementById("question").value;
+        }
+
+        // Simulate server response (you should replace this with actual AJAX requests)
+        $.ajax({
+            url: '/process_user_input/',
+            data: { 'user_message': userMessage, 'question': question },
+            dataType: 'json',
+            success: function (response) {
+                if (document.getElementById("question") != undefined) {
+                    var element = document.getElementById('question');
+                    element.parentNode.removeChild(element);
+                }
+                var botResponse = response.bot_response;
+                document.getElementById("chat-messages").innerHTML += `
+                <div class="card bot-response mb-2" style="font-size: 16px;">
+                    <div class="card-body">
+                        <strong>Bot:<br></strong> ${botResponse}
+                    </div>
+                </div>
+            `;
+
+                // Scroll to the bottom after adding bot response
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+
+                // Debug: Log server response
+                console.log("Bot Response:", botResponse);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
+{% endblock %}

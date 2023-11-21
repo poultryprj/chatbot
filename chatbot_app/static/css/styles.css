@@ -1,0 +1,124 @@
+/* static/css/styles.css */
+
+body {
+    background-color: #a2a8d3;
+}
+
+#user-input {
+    overflow: hidden; /* Hide the scrollbar for the chat container */
+}
+
+.img {
+    width: -webkit-fill-available;
+}
+
+/* Override Bootstrap card margin */
+.card {
+    margin: 0;
+}
+
+/* Override Bootstrap card body padding */
+.card-body {
+    padding: 0.50rem; /* Adjust as needed */
+}
+
+/* Your existing styles */
+#user-input input {
+    border-radius: 5px;
+}
+
+#user-input button {
+    border-radius: 5px;
+}
+
+.card {
+    margin-bottom: 10px;
+}
+
+.user-message {
+    background-color: #B8E994;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.bot-response {
+    background-color: #82CCDD;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+#logo_show_first {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 10px;
+}
+
+#showthiscontent {
+    width: 380px;
+    height: 540px;
+    font-family: 'Arial', sans-serif;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-right: 70px;
+    margin-bottom: 110px;
+    border: 2px solid black;
+    border-style: double;
+    border-radius: 5px;
+}
+
+#chat-container {
+    max-width: 360px;
+    margin: 0 auto;
+    height: 440px;
+    overflow: auto;
+}
+
+#user-input {
+    height: 75px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 9px;
+    background-color: #f8f9fa;
+    overflow: hidden;
+    scrollbar-color: #e9ecef #f8f9fa;
+}
+
+#user-input input {
+    font-size: 16px;
+    text-align: right;
+}
+
+#user-input button {
+    font-size: 16px;
+}
+
+/* Display input and button inline */
+.card-body.inline-form {
+    justify-content: space-between; /* Adjust as needed */
+    align-items: center;
+}
+
+.card-body.inline-form input,
+.card-body.inline-form button {
+    margin-right: 10px;
+}
+
+/* Adjust margins and paddings as needed */
+.card-body.inline-form input {
+    margin-right: 10px;
+}
+
+#logo_show_first img {
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#logo_show_first img:hover {
+    transform: scale(1.2); /* Add a slight scale effect on hover */
+    box-shadow: 0 10px 10px 0 rgba(0, 0.8, 0, 0); /* Add a black shadow on hover */
+}

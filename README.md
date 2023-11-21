@@ -1,2 +1,2 @@
-# chatbot
-chatbot by django
+# chatbot_django
+chatbot by django python
