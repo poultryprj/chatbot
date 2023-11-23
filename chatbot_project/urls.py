@@ -22,3 +22,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('chatbot_app.urls'))
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
